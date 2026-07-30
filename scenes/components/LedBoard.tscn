@@ -1,0 +1,53 @@
+[gd_scene load_steps=4 format=3 uid="uid://c5j0j6yv1n2xr"]
+
+[ext_resource type="Script" path="res://scenes/components/led_board.gd" id="1_script"]
+[ext_resource type="Shader" path="res://shaders/dot_matrix.gdshader" id="2_shader"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_dotmatrix"]
+shader = ExtResource("2_shader")
+shader_parameter/dot_shape = 0
+shader_parameter/rect_size = Vector2(256, 256)
+shader_parameter/dot_radius_px = 6.0
+shader_parameter/dot_spacing_px = 10.0
+shader_parameter/blur_amount = 0.15
+shader_parameter/brightness = 1.0
+shader_parameter/color_on = Color(1, 0.15, 0.15, 1)
+shader_parameter/color_off = Color(0.07, 0.07, 0.08, 1)
+
+[node name="LedBoard" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+
+[node name="SubViewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(256, 256)
+render_target_update_mode = 2
+
+[node name="SourceLabel" type="Label" parent="SubViewport"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(1, 1, 1, 1)
+theme_override_font_sizes/font_size = 64
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DotMatrixDisplay" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+material = SubResource("ShaderMaterial_dotmatrix")
+color = Color(0.07, 0.07, 0.08, 1)

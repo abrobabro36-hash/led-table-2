@@ -1,0 +1,15 @@
+[gd_resource type="Resource" script_class="LedSettings" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/led_settings.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+dot_shape = 0
+dot_size = 6.0
+dot_spacing = 10.0
+brightness = 1.0
+blur = 0.15
+glow_enabled = true
+glow_strength = 0.8
+color_on = Color(1, 0.15, 0.15, 1)
+color_off = Color(0.07, 0.07, 0.08, 1)

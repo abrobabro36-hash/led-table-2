@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=3 uid="uid://bxqfqg8m8m8m1"]
+[gd_scene load_steps=3 format=3 uid="uid://bxqfqg8m8m8m1"]
 
 [ext_resource type="Theme" path="res://theme/app_theme.tres" id="1_theme"]
+[ext_resource type="PackedScene" path="res://scenes/components/LedBoard.tscn" id="2_ledboard"]
 
 [node name="MainScreen" type="Control"]
 layout_mode = 3
@@ -20,18 +21,18 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0.0509804, 0.0509804, 0.0588235, 1)
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="BoardMargin" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 96
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 96
 
-[node name="Label" type="Label" parent="CenterContainer"]
+[node name="LedBoard" parent="BoardMargin" instance=ExtResource("2_ledboard")]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.2980392, 0.5490196, 1, 1)
-theme_override_font_sizes/font_size = 32
-text = "LED Display"
-horizontal_alignment = 1
-vertical_alignment = 1
+text = "Привет 🎉 Табло"

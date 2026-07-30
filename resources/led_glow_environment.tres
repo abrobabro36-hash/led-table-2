@@ -1,0 +1,9 @@
+[gd_resource type="Environment" load_steps=1 format=3]
+
+[resource]
+glow_enabled = true
+glow_intensity = 0.6
+glow_strength = 0.8
+glow_bloom = 0.1
+glow_hdr_bleed_threshold = 0.9
+glow_hdr_bleed_scale = 2.0

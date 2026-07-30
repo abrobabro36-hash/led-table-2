@@ -6,14 +6,14 @@
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dotmatrix"]
 shader = ExtResource("2_shader")
+shader_parameter/mask_enabled = true
 shader_parameter/dot_shape = 0
 shader_parameter/rect_size = Vector2(256, 256)
-shader_parameter/dot_radius_px = 6.0
+shader_parameter/dot_radius_px = 3.5
 shader_parameter/dot_spacing_px = 10.0
 shader_parameter/blur_amount = 0.15
 shader_parameter/brightness = 1.0
-shader_parameter/color_on = Color(1, 0.15, 0.15, 1)
-shader_parameter/color_off = Color(0.07, 0.07, 0.08, 1)
+shader_parameter/gap_color = Color(0.07, 0.07, 0.08, 1)
 
 [node name="LedBoard" type="Control"]
 layout_mode = 3

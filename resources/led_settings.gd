@@ -38,12 +38,20 @@ enum DotShape { CIRCLE, SQUARE, DIAMOND }
 		glow_strength = value
 		emit_changed()
 
-@export var color_on: Color = Color(1.0, 0.15, 0.15):
+## Whether the dot-grid overlay is shown at all; when false, text renders crisp and unmasked.
+@export var mask_enabled: bool = true:
 	set(value):
-		color_on = value
+		mask_enabled = value
 		emit_changed()
 
-@export var color_off: Color = Color(0.07, 0.07, 0.08):
+## Color of the text revealed through the mask (applied to the text itself, not the shader).
+@export var text_color: Color = Color(1.0, 0.15, 0.15):
 	set(value):
-		color_off = value
+		text_color = value
+		emit_changed()
+
+## Color of the gaps between dots in the mask.
+@export var gap_color: Color = Color(0.07, 0.07, 0.08):
+	set(value):
+		gap_color = value
 		emit_changed()

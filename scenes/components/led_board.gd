@@ -97,13 +97,14 @@ func _apply_led_settings() -> void:
 		return
 	var mat := _display_rect.material as ShaderMaterial
 	if mat:
+		mat.set_shader_parameter("mask_enabled", settings.mask_enabled)
 		mat.set_shader_parameter("dot_shape", settings.dot_shape)
 		mat.set_shader_parameter("dot_radius_px", settings.dot_size)
 		mat.set_shader_parameter("dot_spacing_px", settings.dot_spacing)
 		mat.set_shader_parameter("blur_amount", settings.blur)
 		mat.set_shader_parameter("brightness", settings.brightness)
-		mat.set_shader_parameter("color_on", settings.color_on)
-		mat.set_shader_parameter("color_off", settings.color_off)
+		mat.set_shader_parameter("gap_color", settings.gap_color)
+	_source_label.add_theme_color_override("default_color", settings.text_color)
 	if _world_environment.environment:
 		_world_environment.environment.glow_enabled = settings.glow_enabled
 		_world_environment.environment.glow_strength = settings.glow_strength

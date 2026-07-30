@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="AnimationSettings" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/animation_settings.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+mode = 0
+scroll_reverse = false
+speed = 1.0

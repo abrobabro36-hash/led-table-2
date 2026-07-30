@@ -1,0 +1,12 @@
+[gd_resource type="Resource" script_class="TextStyle" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/text_style.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+font_choice = 0
+bold = false
+italic = false
+letter_spacing = 0.0
+base_font_size = 64.0
+text_scale = 1.0

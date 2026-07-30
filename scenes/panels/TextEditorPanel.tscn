@@ -43,6 +43,22 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 
+[node name="TextColorRow" type="HBoxContainer" parent="Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Margin/VBox/TextColorRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(110, 0)
+text = "Цвет текста"
+
+[node name="TextColorSwatch" type="ColorRect" parent="Margin/VBox/TextColorRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+mouse_filter = 1
+color = Color(1, 0.15, 0.15, 1)
+
 [node name="StyleRow" type="HBoxContainer" parent="Margin/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 24

@@ -31,6 +31,19 @@ transparent_bg = true
 size = Vector2i(256, 256)
 render_target_update_mode = 2
 
+[node name="BackgroundLayer" type="Control" parent="SubViewport"]
+size = Vector2(256, 256)
+
+[node name="SolidColorRect" type="ColorRect" parent="SubViewport/BackgroundLayer"]
+size = Vector2(256, 256)
+color = Color(0.05, 0.05, 0.06, 1)
+
+[node name="GradientRect" type="TextureRect" parent="SubViewport/BackgroundLayer"]
+size = Vector2(256, 256)
+
+[node name="ImageRect" type="TextureRect" parent="SubViewport/BackgroundLayer"]
+size = Vector2(256, 256)
+
 [node name="SourceLabel" type="RichTextLabel" parent="SubViewport"]
 theme_override_colors/default_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/normal_font_size = 64

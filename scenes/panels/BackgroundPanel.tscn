@@ -1,0 +1,134 @@
+[gd_scene load_steps=2 format=3 uid="uid://dv2m9k3n7q1r5"]
+
+[ext_resource type="Script" path="res://scenes/panels/background_panel.gd" id="1_script"]
+
+[node name="BackgroundPanel" type="PanelContainer"]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_script")
+
+[node name="Margin" type="MarginContainer" parent="."]
+layout_mode = 2
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="Margin"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="ModeRow" type="HBoxContainer" parent="Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Margin/VBox/ModeRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(110, 0)
+text = "Фон"
+
+[node name="ModeOption" type="OptionButton" parent="Margin/VBox/ModeRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SolidRow" type="HBoxContainer" parent="Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Margin/VBox/SolidRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(110, 0)
+text = "Цвет"
+
+[node name="SolidSwatch" type="ColorRect" parent="Margin/VBox/SolidRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+mouse_filter = 1
+color = Color(0.05, 0.05, 0.06, 1)
+
+[node name="GradientRow" type="VBoxContainer" parent="Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="ColorsRow" type="HBoxContainer" parent="Margin/VBox/GradientRow"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Margin/VBox/GradientRow/ColorsRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(110, 0)
+text = "Цвета"
+
+[node name="GradientASwatch" type="ColorRect" parent="Margin/VBox/GradientRow/ColorsRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+mouse_filter = 1
+color = Color(0.05, 0.05, 0.06, 1)
+
+[node name="GradientBSwatch" type="ColorRect" parent="Margin/VBox/GradientRow/ColorsRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+mouse_filter = 1
+color = Color(0.15, 0.05, 0.2, 1)
+
+[node name="AngleRow" type="HBoxContainer" parent="Margin/VBox/GradientRow"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Margin/VBox/GradientRow/AngleRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(110, 0)
+text = "Угол"
+
+[node name="GradientAngleSlider" type="HSlider" parent="Margin/VBox/GradientRow/AngleRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.0
+max_value = 360.0
+step = 1.0
+
+[node name="ImageRow" type="HBoxContainer" parent="Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Margin/VBox/ImageRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(110, 0)
+text = "Фото"
+
+[node name="PickPhotoButton" type="Button" parent="Margin/VBox/ImageRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Выбрать фото"
+
+[node name="OpacityRow" type="HBoxContainer" parent="Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Margin/VBox/OpacityRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(110, 0)
+text = "Прозрачность"
+
+[node name="OpacitySlider" type="HSlider" parent="Margin/VBox/OpacityRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.0
+max_value = 1.0
+step = 0.01

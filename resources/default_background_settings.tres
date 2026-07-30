@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="BackgroundSettings" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/background_settings.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+mode = 0
+solid_color = Color(0.05, 0.05, 0.06, 1)
+gradient_color_a = Color(0.05, 0.05, 0.06, 1)
+gradient_color_b = Color(0.15, 0.05, 0.2, 1)
+gradient_angle = 0.0
+image_path = ""
+opacity = 1.0

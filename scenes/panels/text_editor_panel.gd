@@ -11,11 +11,14 @@ const MODE_NAMES := ["Статично", "Скролл ↔", "Скролл ↕",
 
 @export var text_style: TextStyle = preload("res://resources/default_text_style.tres")
 @export var animation: AnimationSettings = preload("res://resources/default_animation_settings.tres")
+@export var led_settings: LedSettings = preload("res://resources/default_led_settings.tres")
+@export var color_picker: ColorPickerPanel
 
 @onready var _text_input: LineEdit = %TextInput
 @onready var _font_option: OptionButton = %FontOption
 @onready var _bold_check: CheckButton = %BoldCheck
 @onready var _italic_check: CheckButton = %ItalicCheck
+@onready var _text_color_swatch: ColorRect = %TextColorSwatch
 @onready var _letter_spacing_slider: HSlider = %LetterSpacingSlider
 @onready var _scale_slider: HSlider = %ScaleSlider
 @onready var _mode_option: OptionButton = %ModeOption
@@ -41,6 +44,7 @@ func _ready() -> void:
 	_mode_option.select(animation.mode)
 	_reverse_check.button_pressed = animation.scroll_reverse
 	_speed_slider.value = animation.speed
+	_text_color_swatch.color = led_settings.text_color
 
 	_text_input.text_changed.connect(func(new_text: String) -> void: text_changed.emit(new_text))
 	_font_option.item_selected.connect(func(index: int) -> void: text_style.font_choice = index)
@@ -56,4 +60,19 @@ func _ready() -> void:
 	_pause_button.pressed.connect(func() -> void: pause_requested.emit())
 	_stop_button.pressed.connect(func() -> void: stop_requested.emit())
 
+	_text_color_swatch.gui_input.connect(_on_text_color_swatch_input)
+
 	text_changed.emit(_text_input.text)
+
+
+func _on_text_color_swatch_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		if color_picker.color_picked.is_connected(_on_text_color_picked):
+			color_picker.color_picked.disconnect(_on_text_color_picked)
+		color_picker.color_picked.connect(_on_text_color_picked)
+		color_picker.open_for(led_settings.text_color)
+
+
+func _on_text_color_picked(color: Color) -> void:
+	_text_color_swatch.color = color
+	led_settings.text_color = color

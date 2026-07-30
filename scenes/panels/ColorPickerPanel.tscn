@@ -1,0 +1,42 @@
+[gd_scene load_steps=3 format=3 uid="uid://dqx1n8v0m5w8k"]
+
+[ext_resource type="Script" path="res://scenes/panels/color_picker_panel.gd" id="1_script"]
+[ext_resource type="Theme" path="res://theme/app_theme.tres" id="2_theme"]
+
+[node name="ColorPickerPanel" type="PopupPanel"]
+theme = ExtResource("2_theme")
+script = ExtResource("1_script")
+
+[node name="Margin" type="MarginContainer" parent="."]
+offset_right = 420.0
+offset_bottom = 620.0
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 20
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Margin"]
+layout_mode = 2
+horizontal_scroll_mode = 0
+
+[node name="VBox" type="VBoxContainer" parent="Margin/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 12
+
+[node name="PalettesList" type="VBoxContainer" parent="Margin/ScrollContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="ColorPicker" type="ColorPicker" parent="Margin/ScrollContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+color_mode = 0
+presets_visible = true
+sampler_visible = true
+
+[node name="CloseButton" type="Button" parent="Margin/ScrollContainer/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Готово"

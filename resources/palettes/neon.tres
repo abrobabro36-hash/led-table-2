@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="AppColorPalette" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/color_palette.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+palette_name = "Неон"
+colors = Array[Color]([Color(1, 0.1, 0.6, 1), Color(0.1, 1, 0.95, 1), Color(0.6, 0.1, 1, 1), Color(0.75, 1, 0.1, 1), Color(1, 0.45, 0.05, 1)])

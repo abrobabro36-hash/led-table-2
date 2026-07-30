@@ -33,7 +33,7 @@ void fragment() {
 		float shape_mask = 1.0 - smoothstep(dot_radius_px - edge_soft, dot_radius_px + edge_soft, d);
 
 		vec3 revealed = src.rgb * brightness;
-		COLOR = vec4(mix(gap_color.rgb, revealed, shape_mask), 1.0);
+		COLOR = vec4(mix(gap_color.rgb, revealed, shape_mask), mix(gap_color.a, src.a, shape_mask));
 	} else {
 		COLOR = src;
 	}

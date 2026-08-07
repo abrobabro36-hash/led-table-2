@@ -1,0 +1,16 @@
+[gd_resource type="Resource" script_class="SignalPreset" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/signal_preset.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+id = "ambulance"
+display_name = "Скорая помощь"
+color_a = Color(1, 1, 1, 1)
+color_b = Color(0, 0.3, 1, 1)
+available_patterns = Array[int]([1])
+default_pattern = 1
+siren_type = 2
+has_volume_control = true
+signal_duration = 1.2
+blink_speed = 1.2

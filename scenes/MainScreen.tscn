@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://bxqfqg8m8m8m1"]
+[gd_scene load_steps=8 format=3 uid="uid://bxqfqg8m8m8m1"]
 
 [ext_resource type="Script" path="res://scenes/main_screen.gd" id="1_script"]
 [ext_resource type="Theme" path="res://theme/app_theme.tres" id="2_theme"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" path="res://scenes/panels/TextEditorPanel.tscn" id="4_texteditor"]
 [ext_resource type="PackedScene" path="res://scenes/panels/BackgroundPanel.tscn" id="5_background"]
 [ext_resource type="PackedScene" path="res://scenes/panels/ColorPickerPanel.tscn" id="6_colorpicker"]
+[ext_resource type="PackedScene" path="res://scenes/panels/PresetsPanel.tscn" id="7_presets"]
 
 [node name="MainScreen" type="Control"]
 layout_mode = 3
@@ -39,7 +40,7 @@ theme_override_constants/separation = 16
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 2.3
+size_flags_stretch_ratio = 1.2
 theme_override_constants/margin_left = 40
 theme_override_constants/margin_top = 64
 theme_override_constants/margin_right = 40
@@ -57,7 +58,7 @@ mouse_filter = 1
 [node name="PanelScroll" type="ScrollContainer" parent="Layout"]
 layout_mode = 2
 size_flags_vertical = 3
-size_flags_stretch_ratio = 1.0
+size_flags_stretch_ratio = 2.4
 custom_minimum_size = Vector2(0, 220)
 horizontal_scroll_mode = 0
 
@@ -72,6 +73,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="BackgroundPanel" parent="Layout/PanelScroll/PanelsBox" instance=ExtResource("5_background")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="PresetsPanel" parent="Layout/PanelScroll/PanelsBox" instance=ExtResource("7_presets")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

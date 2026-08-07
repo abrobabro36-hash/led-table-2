@@ -1,6 +1,9 @@
 class_name LedBoard
 extends Control
 
+signal preset_activated(preset: SignalPreset)
+signal preset_deactivated
+
 const FONT_FILES := {
 	TextStyle.FontChoice.INTER: {
 		"upright": "res://theme/fonts/Inter-Variable.ttf",
@@ -61,9 +64,14 @@ const FONT_FILES := {
 @onready var _gradient_rect: TextureRect = $SubViewport/BackgroundLayer/GradientRect
 @onready var _image_rect: TextureRect = $SubViewport/BackgroundLayer/ImageRect
 @onready var _source_label: RichTextLabel = $SubViewport/SourceLabel
+@onready var _signal_graphic: Control = $SubViewport/SignalGraphic
+@onready var _signal_left_rect: ColorRect = $SubViewport/SignalGraphic/LeftRect
+@onready var _signal_right_rect: ColorRect = $SubViewport/SignalGraphic/RightRect
 @onready var _display_rect: ColorRect = $DotMatrixDisplay
 @onready var _world_environment: WorldEnvironment = $WorldEnvironment
 @onready var _text_animator: TextAnimator = $TextAnimator
+@onready var _signal_player: SignalPlayer = $SignalPlayer
+@onready var _siren_player: SirenPlayer = $SirenPlayer
 
 var _gradient_texture: GradientTexture2D
 var _loaded_image_path: String = ""
@@ -94,6 +102,9 @@ func _ready() -> void:
 	_apply_background()
 	_text_animator.setup(_source_label, animation)
 	_text_animator.set_raw_text(text)
+	_signal_player.setup(_signal_graphic, _signal_left_rect, _signal_right_rect, _source_label, _text_animator, _siren_player)
+	_signal_player.preset_activated.connect(func(preset: SignalPreset) -> void: preset_activated.emit(preset))
+	_signal_player.preset_deactivated.connect(func() -> void: preset_deactivated.emit())
 	resized.connect(_on_resized)
 	_on_resized()
 	_apply_led_settings()
@@ -111,6 +122,22 @@ func stop() -> void:
 	_text_animator.stop()
 
 
+func activate_preset(preset: SignalPreset, pattern: SignalPreset.BlinkPattern) -> void:
+	_signal_player.activate(preset, pattern, text)
+
+
+func deactivate_preset() -> void:
+	_signal_player.deactivate()
+
+
+func get_active_preset() -> SignalPreset:
+	return _signal_player.preset if _signal_player.active else null
+
+
+func set_siren_volume_db(db: float) -> void:
+	_siren_player.volume_db = db
+
+
 func _on_resized() -> void:
 	if size.x < 1.0 or size.y < 1.0:
 		return
@@ -119,6 +146,7 @@ func _on_resized() -> void:
 	_solid_rect.size = size
 	_gradient_rect.size = size
 	_image_rect.size = size
+	_signal_graphic.size = size
 	_text_animator.set_viewport_size(size)
 	var mat := _display_rect.material as ShaderMaterial
 	if mat:

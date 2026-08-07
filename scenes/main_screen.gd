@@ -10,6 +10,7 @@ const BANNER_FADE_DURATION := 0.2
 @onready var _led_board: LedBoard = %LedBoard
 @onready var _text_panel: TextEditorPanel = %TextEditorPanel
 @onready var _background_panel: BackgroundPanel = %BackgroundPanel
+@onready var _presets_panel: PresetsPanel = %PresetsPanel
 @onready var _color_picker: ColorPickerPanel = %ColorPickerPanel
 @onready var _tap_area: Control = %TapArea
 @onready var _board_margin: MarginContainer = %BoardMargin
@@ -33,6 +34,18 @@ func _ready() -> void:
 
 	_background_panel.background = _led_board.background
 	_background_panel.color_picker = _color_picker
+
+	_presets_panel.preset_selected.connect(func(preset: SignalPreset, pattern: SignalPreset.BlinkPattern) -> void:
+		_led_board.activate_preset(preset, pattern)
+	)
+	_presets_panel.pattern_changed.connect(func(pattern: SignalPreset.BlinkPattern) -> void:
+		var active := _led_board.get_active_preset()
+		if active:
+			_led_board.activate_preset(active, pattern)
+	)
+	_presets_panel.volume_changed.connect(_led_board.set_siren_volume_db)
+	_presets_panel.stop_requested.connect(_led_board.deactivate_preset)
+	_led_board.preset_activated.connect(_on_preset_activated)
 
 	_tap_area.gui_input.connect(_on_tap_area_gui_input)
 
@@ -61,6 +74,11 @@ func hide_banner() -> void:
 	_banner_tween = create_tween()
 	_banner_tween.tween_property(_ad_banner, "modulate:a", 0.0, BANNER_FADE_DURATION)
 	_banner_tween.tween_callback(func() -> void: _ad_banner.visible = false)
+
+
+func _on_preset_activated(preset: SignalPreset) -> void:
+	if preset.id == "police" and not _is_fullscreen:
+		_enter_fullscreen()
 
 
 func _on_tap_area_gui_input(event: InputEvent) -> void:

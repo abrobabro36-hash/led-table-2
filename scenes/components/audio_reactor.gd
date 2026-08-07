@@ -58,6 +58,14 @@ func _ensure_bus() -> int:
 func _begin_capture() -> void:
 	if _active:
 		return
+	# Deferred: this can be triggered from NOTIFICATION_APPLICATION_FOCUS_IN,
+	# which may fire while the scene tree is still busy setting up children —
+	# add_child() would fail synchronously in that window.
+	_active = true
+	call_deferred("_do_begin_capture")
+
+
+func _do_begin_capture() -> void:
 	var bus_idx := _ensure_bus()
 	if not _mic_player:
 		_mic_player = AudioStreamPlayer.new()
@@ -66,7 +74,6 @@ func _begin_capture() -> void:
 		add_child(_mic_player)
 	_mic_player.play()
 	_spectrum = AudioServer.get_bus_effect_instance(bus_idx, 0)
-	_active = true
 	set_process(true)
 
 

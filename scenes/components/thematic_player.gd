@@ -8,12 +8,15 @@ enum Phase { DECORATIVE, TEXT }
 
 var preset: ThematicPreset
 var active: bool = false
+## When false, the cycle never advances to the text phase — decorative animation loops forever.
+var show_text: bool = true
 
 var _phase: Phase = Phase.DECORATIVE
 var _phase_elapsed: float = 0.0
 var _spawn_elapsed: float = 0.0
 var _text_phase_duration: float = 3.0
 var _current_text: String = ""
+var _waiting_for_cycle_signal: bool = false
 var _rng := RandomNumberGenerator.new()
 var _particles: Array[Label] = []
 
@@ -52,6 +55,7 @@ func deactivate() -> void:
 		return
 	active = false
 	set_process(false)
+	_disconnect_cycle_signal()
 	_audio_reactor.stop()
 	_clear_particles()
 	_layer.visible = false
@@ -74,26 +78,42 @@ func _process(delta: float) -> void:
 			if _phase_elapsed >= preset.decorative_duration:
 				_advance_phase()
 		Phase.TEXT:
-			if _phase_elapsed >= _text_phase_duration:
+			if not _waiting_for_cycle_signal and _phase_elapsed >= _text_phase_duration:
 				_advance_phase()
 
 
 func _advance_phase() -> void:
 	_phase_elapsed = 0.0
+	_disconnect_cycle_signal()
 	if _phase == Phase.DECORATIVE:
-		if _current_text.is_empty():
+		if _current_text.is_empty() or not show_text:
 			return
 		_phase = Phase.TEXT
 		_layer.visible = false
 		_source_label.visible = true
-		_text_phase_duration = _estimate_text_duration()
 		_text_animator.play()
+		if _text_animator.uses_cycle_signal():
+			_waiting_for_cycle_signal = true
+			_text_animator.cycle_completed.connect(_on_text_cycle_completed)
+		else:
+			_text_phase_duration = _estimate_text_duration()
 	else:
 		_phase = Phase.DECORATIVE
 		_layer.visible = true
 		_source_label.visible = false
 		_text_animator.stop()
 		_clear_particles()
+
+
+func _on_text_cycle_completed() -> void:
+	if _phase == Phase.TEXT:
+		_advance_phase()
+
+
+func _disconnect_cycle_signal() -> void:
+	_waiting_for_cycle_signal = false
+	if _text_animator.cycle_completed.is_connected(_on_text_cycle_completed):
+		_text_animator.cycle_completed.disconnect(_on_text_cycle_completed)
 
 
 func _estimate_text_duration() -> float:
@@ -129,6 +149,7 @@ func _animate_float_up(label: Label) -> void:
 	var duration := preset.particle_lifetime
 	var boost := 1.0 + (_audio_reactor.volume * 0.6 if preset.reacts_to_audio else 0.0)
 	var tween := create_tween()
+	label.set_meta("tween", tween)
 	tween.set_parallel(true)
 	tween.tween_property(label, "position:y", -preset.particle_font_size, duration).set_trans(Tween.TRANS_SINE)
 	tween.tween_property(label, "modulate:a", 1.0, duration * 0.2)
@@ -140,6 +161,7 @@ func _animate_float_up(label: Label) -> void:
 func _animate_twinkle_fall(label: Label) -> void:
 	var duration := preset.particle_lifetime
 	var tween := create_tween()
+	label.set_meta("tween", tween)
 	tween.set_parallel(true)
 	tween.tween_property(label, "position:y", _layer.size.y + preset.particle_font_size, duration).set_trans(Tween.TRANS_LINEAR)
 	tween.tween_property(label, "modulate:a", 1.0, duration * 0.15)
@@ -156,5 +178,8 @@ func _remove_particle(label: Label) -> void:
 func _clear_particles() -> void:
 	for particle in _particles:
 		if is_instance_valid(particle):
+			var tween: Tween = particle.get_meta("tween", null)
+			if tween:
+				tween.kill()
 			particle.queue_free()
 	_particles.clear()

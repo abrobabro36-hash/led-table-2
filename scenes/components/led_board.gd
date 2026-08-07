@@ -152,6 +152,11 @@ func activate_thematic_preset(preset: ThematicPreset) -> void:
 	_thematic_player.activate(preset, text)
 
 
+func set_presets_show_text(enabled: bool) -> void:
+	_signal_player.show_text = enabled
+	_thematic_player.show_text = enabled
+
+
 func deactivate_thematic_preset() -> void:
 	_thematic_player.deactivate()
 

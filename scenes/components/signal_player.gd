@@ -22,12 +22,15 @@ enum Phase { SIGNAL, TEXT }
 var preset: SignalPreset
 var pattern: SignalPreset.BlinkPattern = SignalPreset.BlinkPattern.SYNC
 var active: bool = false
+## When false, the cycle never advances to the text phase — signal loops forever.
+var show_text: bool = true
 
 var _phase: Phase = Phase.SIGNAL
 var _phase_elapsed: float = 0.0
 var _t: float = 0.0
 var _text_phase_duration: float = 3.0
 var _current_text: String = ""
+var _waiting_for_cycle_signal: bool = false
 
 var _left_rect: ColorRect
 var _right_rect: ColorRect
@@ -67,6 +70,7 @@ func deactivate() -> void:
 		return
 	active = false
 	set_process(false)
+	_disconnect_cycle_signal()
 	_signal_graphic.visible = false
 	_source_label.visible = true
 	_left_rect.color = Color(0, 0, 0, 0)
@@ -87,25 +91,41 @@ func _process(delta: float) -> void:
 			if _phase_elapsed >= preset.signal_duration:
 				_advance_phase()
 		Phase.TEXT:
-			if _phase_elapsed >= _text_phase_duration:
+			if not _waiting_for_cycle_signal and _phase_elapsed >= _text_phase_duration:
 				_advance_phase()
 
 
 func _advance_phase() -> void:
 	_phase_elapsed = 0.0
+	_disconnect_cycle_signal()
 	if _phase == Phase.SIGNAL:
-		if _current_text.is_empty():
+		if _current_text.is_empty() or not show_text:
 			return
 		_phase = Phase.TEXT
 		_signal_graphic.visible = false
 		_source_label.visible = true
-		_text_phase_duration = _estimate_text_duration()
 		_text_animator.play()
+		if _text_animator.uses_cycle_signal():
+			_waiting_for_cycle_signal = true
+			_text_animator.cycle_completed.connect(_on_text_cycle_completed)
+		else:
+			_text_phase_duration = _estimate_text_duration()
 	else:
 		_phase = Phase.SIGNAL
 		_signal_graphic.visible = true
 		_source_label.visible = false
 		_text_animator.stop()
+
+
+func _on_text_cycle_completed() -> void:
+	if _phase == Phase.TEXT:
+		_advance_phase()
+
+
+func _disconnect_cycle_signal() -> void:
+	_waiting_for_cycle_signal = false
+	if _text_animator.cycle_completed.is_connected(_on_text_cycle_completed):
+		_text_animator.cycle_completed.disconnect(_on_text_cycle_completed)
 
 
 func _estimate_text_duration() -> float:

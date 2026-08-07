@@ -5,6 +5,7 @@ signal text_changed(new_text: String)
 signal play_requested
 signal pause_requested
 signal stop_requested
+signal show_text_in_presets_toggled(enabled: bool)
 
 const FONT_NAMES := ["Inter", "Manrope", "Nunito Sans"]
 const MODE_NAMES := ["Статично", "Скролл ↔", "Скролл ↕", "Мигание", "Печатание", "Пульсация", "Волна", "Bounce"]
@@ -27,6 +28,7 @@ const MODE_NAMES := ["Статично", "Скролл ↔", "Скролл ↕",
 @onready var _play_button: Button = %PlayButton
 @onready var _pause_button: Button = %PauseButton
 @onready var _stop_button: Button = %StopButton
+@onready var _show_text_in_presets_check: CheckButton = %ShowTextInPresetsCheck
 
 
 func _ready() -> void:
@@ -60,9 +62,13 @@ func _ready() -> void:
 	_pause_button.pressed.connect(func() -> void: pause_requested.emit())
 	_stop_button.pressed.connect(func() -> void: stop_requested.emit())
 
+	_show_text_in_presets_check.button_pressed = true
+	_show_text_in_presets_check.toggled.connect(func(pressed: bool) -> void: show_text_in_presets_toggled.emit(pressed))
+
 	_text_color_swatch.gui_input.connect(_on_text_color_swatch_input)
 
 	text_changed.emit(_text_input.text)
+	show_text_in_presets_toggled.emit(true)
 
 
 func _on_text_color_swatch_input(event: InputEvent) -> void:

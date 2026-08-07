@@ -32,6 +32,7 @@ func _ready() -> void:
 	_text_panel.play_requested.connect(_led_board.play)
 	_text_panel.pause_requested.connect(_led_board.pause)
 	_text_panel.stop_requested.connect(_led_board.stop)
+	_text_panel.show_text_in_presets_toggled.connect(_led_board.set_presets_show_text)
 
 	_background_panel.background = _led_board.background
 	_background_panel.color_picker = _color_picker

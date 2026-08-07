@@ -1,6 +1,10 @@
 class_name TextAnimator
 extends Node
 
+## Emitted when a scroll/typewriter mode finishes one full pass. Modes without
+## a natural "one pass" endpoint (static/blink/pulse/wave/bounce) never emit this.
+signal cycle_completed
+
 enum PlayState { STOPPED, PLAYING, PAUSED }
 
 var target: RichTextLabel
@@ -19,6 +23,7 @@ var settings: AnimationSettings:
 var _state: PlayState = PlayState.STOPPED
 var _elapsed: float = 0.0
 var _bounce_tween: Tween
+var _prev_typewriter_phase: float = 0.0
 
 
 func _ready() -> void:
@@ -69,6 +74,16 @@ func _mode_needs_process() -> bool:
 	return settings != null and settings.mode not in [AnimationSettings.Mode.STATIC, AnimationSettings.Mode.WAVE]
 
 
+## Whether this mode reports real pass-completion via `cycle_completed` (scroll/typewriter),
+## as opposed to having no natural "fully shown" moment (blink/pulse/wave/bounce/static).
+func uses_cycle_signal() -> bool:
+	return settings != null and settings.mode in [
+		AnimationSettings.Mode.SCROLL_HORIZONTAL,
+		AnimationSettings.Mode.SCROLL_VERTICAL,
+		AnimationSettings.Mode.TYPEWRITER,
+	]
+
+
 func _on_settings_changed() -> void:
 	if _state == PlayState.PLAYING:
 		set_process(_mode_needs_process())
@@ -99,6 +114,7 @@ func _apply_wave_text() -> void:
 
 func _reset_for_mode() -> void:
 	_elapsed = 0.0
+	_prev_typewriter_phase = 0.0
 	if target == null or settings == null:
 		return
 	target.modulate = Color(1, 1, 1, 1)
@@ -159,8 +175,10 @@ func _process_scroll_horizontal(delta: float) -> void:
 	var w := target.size.x
 	if dir < 0.0 and target.position.x < -w:
 		target.position.x = viewport_size.x
+		cycle_completed.emit()
 	elif dir > 0.0 and target.position.x > viewport_size.x:
 		target.position.x = -w
+		cycle_completed.emit()
 
 
 func _process_scroll_vertical(delta: float) -> void:
@@ -171,8 +189,10 @@ func _process_scroll_vertical(delta: float) -> void:
 	var h := target.size.y
 	if dir < 0.0 and target.position.y < -h:
 		target.position.y = viewport_size.y
+		cycle_completed.emit()
 	elif dir > 0.0 and target.position.y > viewport_size.y:
 		target.position.y = -h
+		cycle_completed.emit()
 
 
 func _process_blink() -> void:
@@ -191,6 +211,9 @@ func _process_typewriter() -> void:
 	var cycle := reveal_time + pause_time
 	var phase := fmod(_elapsed, cycle)
 	target.visible_characters = clampi(int(phase * chars_per_sec), 0, total_chars)
+	if phase < _prev_typewriter_phase:
+		cycle_completed.emit()
+	_prev_typewriter_phase = phase
 
 
 func _process_pulse() -> void:

@@ -1,0 +1,8 @@
+[gd_resource type="Resource" script_class="AppColorPalette" load_steps=2 format=3]
+
+[ext_resource type="Script" path="res://resources/color_palette.gd" id="1_script"]
+
+[resource]
+script = ExtResource("1_script")
+palette_name = "День рождения"
+colors = Array[Color]([Color(1, 0.2, 0.4, 1), Color(1, 0.8, 0.1, 1), Color(0.2, 0.8, 1, 1), Color(0.6, 0.2, 1, 1), Color(0.2, 1, 0.5, 1)])

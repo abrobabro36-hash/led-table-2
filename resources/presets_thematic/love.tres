@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ThematicPreset" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://resources/thematic_preset.gd" id="1_script"]
+[ext_resource type="Resource" path="res://resources/palettes/love.tres" id="2_palette"]
+
+[resource]
+script = ExtResource("1_script")
+id = "love"
+display_name = "Любовь"
+palette = ExtResource("2_palette")
+symbols = Array[String](["❤", "💕", "💖"])
+movement = 0
+spawn_interval = 0.5
+particle_lifetime = 3.0
+particle_font_size = 44.0
+reacts_to_audio = false
+decorative_duration = 5.0

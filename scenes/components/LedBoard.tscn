@@ -1,10 +1,12 @@
-[gd_scene load_steps=7 format=3 uid="uid://c5j0j6yv1n2xr"]
+[gd_scene load_steps=9 format=3 uid="uid://c5j0j6yv1n2xr"]
 
 [ext_resource type="Script" path="res://scenes/components/led_board.gd" id="1_script"]
 [ext_resource type="Shader" path="res://shaders/dot_matrix.gdshader" id="2_shader"]
 [ext_resource type="Script" path="res://scenes/components/text_animator.gd" id="3_animator"]
 [ext_resource type="Script" path="res://scenes/components/signal_player.gd" id="4_signalplayer"]
 [ext_resource type="Script" path="res://scenes/components/siren_player.gd" id="5_sirenplayer"]
+[ext_resource type="Script" path="res://scenes/components/thematic_player.gd" id="6_thematicplayer"]
+[ext_resource type="Script" path="res://scenes/components/audio_reactor.gd" id="7_audioreactor"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dotmatrix"]
 shader = ExtResource("2_shader")
@@ -71,6 +73,10 @@ layout_mode = 2
 size_flags_horizontal = 3
 color = Color(0, 0, 0, 0)
 
+[node name="ThematicLayer" type="Control" parent="SubViewport"]
+visible = false
+size = Vector2(256, 256)
+
 [node name="TextAnimator" type="Node" parent="."]
 script = ExtResource("3_animator")
 
@@ -79,6 +85,12 @@ script = ExtResource("4_signalplayer")
 
 [node name="SirenPlayer" type="AudioStreamPlayer" parent="."]
 script = ExtResource("5_sirenplayer")
+
+[node name="ThematicPlayer" type="Node" parent="."]
+script = ExtResource("6_thematicplayer")
+
+[node name="AudioReactor" type="Node" parent="."]
+script = ExtResource("7_audioreactor")
 
 [node name="DotMatrixDisplay" type="ColorRect" parent="."]
 layout_mode = 1

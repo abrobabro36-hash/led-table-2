@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="ThematicPreset" load_steps=3 format=3]
+
+[ext_resource type="Script" path="res://resources/thematic_preset.gd" id="1_script"]
+[ext_resource type="Resource" path="res://resources/palettes/christmas.tres" id="2_palette"]
+
+[resource]
+script = ExtResource("1_script")
+id = "christmas"
+display_name = "Рождество"
+palette = ExtResource("2_palette")
+symbols = Array[String](["❄", "❅", "❆"])
+movement = 1
+spawn_interval = 0.4
+particle_lifetime = 3.5
+particle_font_size = 36.0
+reacts_to_audio = false
+decorative_duration = 5.0

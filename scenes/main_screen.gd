@@ -11,6 +11,7 @@ const BANNER_FADE_DURATION := 0.2
 @onready var _text_panel: TextEditorPanel = %TextEditorPanel
 @onready var _background_panel: BackgroundPanel = %BackgroundPanel
 @onready var _presets_panel: PresetsPanel = %PresetsPanel
+@onready var _thematic_presets_panel: ThematicPresetsPanel = %ThematicPresetsPanel
 @onready var _color_picker: ColorPickerPanel = %ColorPickerPanel
 @onready var _tap_area: Control = %TapArea
 @onready var _board_margin: MarginContainer = %BoardMargin
@@ -46,6 +47,9 @@ func _ready() -> void:
 	_presets_panel.volume_changed.connect(_led_board.set_siren_volume_db)
 	_presets_panel.stop_requested.connect(_led_board.deactivate_preset)
 	_led_board.preset_activated.connect(_on_preset_activated)
+
+	_thematic_presets_panel.preset_selected.connect(_led_board.activate_thematic_preset)
+	_thematic_presets_panel.stop_requested.connect(_led_board.deactivate_thematic_preset)
 
 	_tap_area.gui_input.connect(_on_tap_area_gui_input)
 

@@ -3,6 +3,8 @@ extends Control
 
 signal preset_activated(preset: SignalPreset)
 signal preset_deactivated
+signal thematic_preset_activated(preset: ThematicPreset)
+signal thematic_preset_deactivated
 
 const FONT_FILES := {
 	TextStyle.FontChoice.INTER: {
@@ -72,6 +74,9 @@ const FONT_FILES := {
 @onready var _text_animator: TextAnimator = $TextAnimator
 @onready var _signal_player: SignalPlayer = $SignalPlayer
 @onready var _siren_player: SirenPlayer = $SirenPlayer
+@onready var _thematic_layer: Control = $SubViewport/ThematicLayer
+@onready var _thematic_player: ThematicPlayer = $ThematicPlayer
+@onready var _audio_reactor: AudioReactor = $AudioReactor
 
 var _gradient_texture: GradientTexture2D
 var _loaded_image_path: String = ""
@@ -105,6 +110,9 @@ func _ready() -> void:
 	_signal_player.setup(_signal_graphic, _signal_left_rect, _signal_right_rect, _source_label, _text_animator, _siren_player)
 	_signal_player.preset_activated.connect(func(preset: SignalPreset) -> void: preset_activated.emit(preset))
 	_signal_player.preset_deactivated.connect(func() -> void: preset_deactivated.emit())
+	_thematic_player.setup(_thematic_layer, _source_label, _text_animator, _audio_reactor)
+	_thematic_player.preset_activated.connect(func(preset: ThematicPreset) -> void: thematic_preset_activated.emit(preset))
+	_thematic_player.preset_deactivated.connect(func() -> void: thematic_preset_deactivated.emit())
 	resized.connect(_on_resized)
 	_on_resized()
 	_apply_led_settings()
@@ -123,6 +131,7 @@ func stop() -> void:
 
 
 func activate_preset(preset: SignalPreset, pattern: SignalPreset.BlinkPattern) -> void:
+	_thematic_player.deactivate()
 	_signal_player.activate(preset, pattern, text)
 
 
@@ -138,6 +147,19 @@ func set_siren_volume_db(db: float) -> void:
 	_siren_player.volume_db = db
 
 
+func activate_thematic_preset(preset: ThematicPreset) -> void:
+	_signal_player.deactivate()
+	_thematic_player.activate(preset, text)
+
+
+func deactivate_thematic_preset() -> void:
+	_thematic_player.deactivate()
+
+
+func get_active_thematic_preset() -> ThematicPreset:
+	return _thematic_player.preset if _thematic_player.active else null
+
+
 func _on_resized() -> void:
 	if size.x < 1.0 or size.y < 1.0:
 		return
@@ -147,6 +169,7 @@ func _on_resized() -> void:
 	_gradient_rect.size = size
 	_image_rect.size = size
 	_signal_graphic.size = size
+	_thematic_layer.size = size
 	_text_animator.set_viewport_size(size)
 	var mat := _display_rect.material as ShaderMaterial
 	if mat:

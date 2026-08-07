@@ -36,6 +36,7 @@ grow_vertical = 2
 theme_override_constants/separation = 16
 
 [node name="BoardMargin" type="MarginContainer" parent="Layout"]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 3
 size_flags_stretch_ratio = 2.3
@@ -47,6 +48,11 @@ theme_override_constants/margin_bottom = 16
 [node name="LedBoard" parent="Layout/BoardMargin" instance=ExtResource("3_ledboard")]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="TapArea" type="Control" parent="Layout/BoardMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
 
 [node name="PanelScroll" type="ScrollContainer" parent="Layout"]
 layout_mode = 2
@@ -69,6 +75,18 @@ size_flags_horizontal = 3
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
+
+[node name="AdBanner" type="PanelContainer" parent="Layout"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 56)
+layout_mode = 2
+
+[node name="AdBannerLabel" type="Label" parent="Layout/AdBanner"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.5, 0.5, 0.53, 1)
+text = "Ad placeholder"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="ColorPickerPanel" parent="." instance=ExtResource("6_colorpicker")]
 unique_name_in_owner = true

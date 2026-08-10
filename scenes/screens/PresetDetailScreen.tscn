@@ -208,3 +208,34 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 text = "Старт"
+
+[node name="RadioBox" type="VBoxContainer" parent="Layout/ScrollContainer/Margin/PanelsBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Layout/ScrollContainer/Margin/PanelsBox/RadioBox"]
+layout_mode = 2
+text = "Рация"
+
+[node name="RadioTransportRow" type="HBoxContainer" parent="Layout/ScrollContainer/Margin/PanelsBox/RadioBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="RadioRecordButton" type="Button" parent="Layout/ScrollContainer/Margin/PanelsBox/RadioBox/RadioTransportRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Запись"
+
+[node name="RadioPlayButton" type="Button" parent="Layout/ScrollContainer/Margin/PanelsBox/RadioBox/RadioTransportRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+text = "Воспроизвести"
+
+[node name="RadioRepeatCheck" type="CheckButton" parent="Layout/ScrollContainer/Margin/PanelsBox/RadioBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Повтор"

@@ -32,6 +32,10 @@ const DEMO_DURATION := 4.0
 @onready var _demo_button: Button = %DemoButton
 @onready var _bottom_fullscreen_button: Button = %BottomFullscreenButton
 @onready var _start_button: Button = %StartButton
+@onready var _radio_box: VBoxContainer = %RadioBox
+@onready var _radio_record_button: Button = %RadioRecordButton
+@onready var _radio_play_button: Button = %RadioPlayButton
+@onready var _radio_repeat_check: CheckButton = %RadioRepeatCheck
 
 var _preset: SignalPreset
 var _working_preset: SignalPreset
@@ -67,6 +71,11 @@ func _ready() -> void:
 	_volume_slider.value_changed.connect(func(value: float) -> void: _led_board.set_siren_volume_db(linear_to_db(value)))
 	_demo_button.pressed.connect(_on_demo_pressed)
 	_start_button.pressed.connect(_on_start_pressed)
+	_radio_record_button.pressed.connect(_on_radio_record_pressed)
+	_radio_play_button.pressed.connect(_on_radio_play_pressed)
+	_radio_repeat_check.toggled.connect(AudioManager.set_repeat)
+	AudioManager.recording_state_changed.connect(_on_radio_recording_state_changed)
+	AudioManager.playback_state_changed.connect(_on_radio_playback_state_changed)
 
 	_apply_preset()
 
@@ -98,6 +107,10 @@ func _apply_preset() -> void:
 	_tab_row.visible = has_siren
 	_volume_row.visible = _preset.has_volume_control
 	_show_lights_tab()
+
+	_radio_box.visible = _preset.id == "police"
+	if _radio_box.visible:
+		_radio_play_button.disabled = not AudioManager.can_play_recording()
 
 
 func _on_pattern_selected(pattern: SignalPreset.BlinkPattern, pressed_button: Button) -> void:
@@ -157,6 +170,29 @@ func _deactivate() -> void:
 	_led_board.deactivate_preset()
 	_is_active = false
 	_start_button.text = "Старт"
+
+
+func _on_radio_record_pressed() -> void:
+	if AudioManager.is_recording:
+		AudioManager.stop_recording()
+	else:
+		AudioManager.start_recording()
+
+
+func _on_radio_play_pressed() -> void:
+	if AudioManager.is_playing:
+		AudioManager.stop_playback()
+	else:
+		AudioManager.play_recording()
+
+
+func _on_radio_recording_state_changed(recording: bool) -> void:
+	_radio_record_button.text = "Стоп запись" if recording else "Запись"
+	_radio_play_button.disabled = not AudioManager.can_play_recording()
+
+
+func _on_radio_playback_state_changed(playing: bool) -> void:
+	_radio_play_button.text = "Стоп" if playing else "Воспроизвести"
 
 
 func _on_tap_area_gui_input(event: InputEvent) -> void:

@@ -6,12 +6,14 @@ const NORMAL_MARGIN_RIGHT := 40
 const NORMAL_MARGIN_BOTTOM := 16
 const FULLSCREEN_TWEEN_DURATION := 0.35
 const BANNER_FADE_DURATION := 0.2
+const AUTOSAVE_DEBOUNCE_SEC := 1.5
 
 @onready var _led_board: LedBoard = %LedBoard
 @onready var _text_panel: TextEditorPanel = %TextEditorPanel
 @onready var _background_panel: BackgroundPanel = %BackgroundPanel
 @onready var _presets_panel: PresetsPanel = %PresetsPanel
 @onready var _thematic_presets_panel: ThematicPresetsPanel = %ThematicPresetsPanel
+@onready var _projects_panel: ProjectsPanel = %ProjectsPanel
 @onready var _color_picker: ColorPickerPanel = %ColorPickerPanel
 @onready var _tap_area: Control = %TapArea
 @onready var _board_margin: MarginContainer = %BoardMargin
@@ -21,6 +23,7 @@ const BANNER_FADE_DURATION := 0.2
 var _is_fullscreen: bool = false
 var _margin_tween: Tween
 var _banner_tween: Tween
+var _autosave_timer: Timer
 
 
 func _ready() -> void:
@@ -36,6 +39,10 @@ func _ready() -> void:
 
 	_background_panel.background = _led_board.background
 	_background_panel.color_picker = _color_picker
+
+	_projects_panel.led_board = _led_board
+	_projects_panel.text_panel = _text_panel
+	_projects_panel.background_panel = _background_panel
 
 	_presets_panel.preset_selected.connect(func(preset: SignalPreset, pattern: SignalPreset.BlinkPattern) -> void:
 		_led_board.activate_preset(preset, pattern)
@@ -57,6 +64,48 @@ func _ready() -> void:
 	if not is_premium():
 		_ad_banner.visible = true
 		_ad_banner.modulate.a = 1.0
+
+	_restore_autosave()
+	_setup_autosave_watch()
+
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_APPLICATION_PAUSED or what == NOTIFICATION_WM_CLOSE_REQUEST:
+		_save_autosave()
+
+
+func _setup_autosave_watch() -> void:
+	_autosave_timer = Timer.new()
+	_autosave_timer.one_shot = true
+	_autosave_timer.wait_time = AUTOSAVE_DEBOUNCE_SEC
+	_autosave_timer.timeout.connect(_save_autosave)
+	add_child(_autosave_timer)
+
+	_led_board.text_style.changed.connect(_queue_autosave)
+	_led_board.animation.changed.connect(_queue_autosave)
+	_led_board.settings.changed.connect(_queue_autosave)
+	_led_board.background.changed.connect(_queue_autosave)
+	_text_panel.text_changed.connect(func(_new_text: String) -> void: _queue_autosave())
+
+
+func _queue_autosave() -> void:
+	_autosave_timer.start()
+
+
+func _save_autosave() -> void:
+	var snapshot := Project.capture(_led_board.text, _led_board.text_style, _led_board.animation, _led_board.settings, _led_board.background)
+	ProjectManager.autosave(snapshot)
+
+
+func _restore_autosave() -> void:
+	var project := ProjectManager.load_autosave()
+	if project == null:
+		return
+	project.apply_to(_led_board.text_style, _led_board.animation, _led_board.settings, _led_board.background)
+	_led_board.text = project.text
+	_text_panel.set_text(project.text)
+	_text_panel.sync_ui()
+	_background_panel.sync_ui()
 
 
 func is_premium() -> bool:

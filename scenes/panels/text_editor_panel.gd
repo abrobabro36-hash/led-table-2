@@ -38,15 +38,7 @@ func _ready() -> void:
 		_mode_option.add_item(mode_name)
 
 	_text_input.text = "LED Display 🎉"
-	_font_option.select(text_style.font_choice)
-	_bold_check.button_pressed = text_style.bold
-	_italic_check.button_pressed = text_style.italic
-	_letter_spacing_slider.value = text_style.letter_spacing
-	_scale_slider.value = text_style.text_scale
-	_mode_option.select(animation.mode)
-	_reverse_check.button_pressed = animation.scroll_reverse
-	_speed_slider.value = animation.speed
-	_text_color_swatch.color = led_settings.text_color
+	sync_ui()
 
 	_text_input.text_changed.connect(func(new_text: String) -> void: text_changed.emit(new_text))
 	_font_option.item_selected.connect(func(index: int) -> void: text_style.font_choice = index)
@@ -69,6 +61,24 @@ func _ready() -> void:
 
 	text_changed.emit(_text_input.text)
 	show_text_in_presets_toggled.emit(true)
+
+
+## Re-reads all widgets from text_style/animation/led_settings; call after
+## their fields have been changed from outside (e.g. loading a project).
+func sync_ui() -> void:
+	_font_option.select(text_style.font_choice)
+	_bold_check.set_pressed_no_signal(text_style.bold)
+	_italic_check.set_pressed_no_signal(text_style.italic)
+	_letter_spacing_slider.set_value_no_signal(text_style.letter_spacing)
+	_scale_slider.set_value_no_signal(text_style.text_scale)
+	_mode_option.select(animation.mode)
+	_reverse_check.set_pressed_no_signal(animation.scroll_reverse)
+	_speed_slider.set_value_no_signal(animation.speed)
+	_text_color_swatch.color = led_settings.text_color
+
+
+func set_text(value: String) -> void:
+	_text_input.text = value
 
 
 func _on_text_color_swatch_input(event: InputEvent) -> void:

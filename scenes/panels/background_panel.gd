@@ -21,13 +21,7 @@ const MODE_NAMES := ["Сплошной цвет", "Градиент", "Изоб�
 func _ready() -> void:
 	for mode_name in MODE_NAMES:
 		_mode_option.add_item(mode_name)
-	_mode_option.select(background.mode)
-	_solid_swatch.color = background.solid_color
-	_gradient_a_swatch.color = background.gradient_color_a
-	_gradient_b_swatch.color = background.gradient_color_b
-	_gradient_angle_slider.value = background.gradient_angle
-	_opacity_slider.value = background.opacity
-	_update_visible_rows()
+	sync_ui()
 
 	_mode_option.item_selected.connect(func(index: int) -> void:
 		background.mode = index
@@ -39,6 +33,18 @@ func _ready() -> void:
 	_gradient_angle_slider.value_changed.connect(func(value: float) -> void: background.gradient_angle = value)
 	_opacity_slider.value_changed.connect(func(value: float) -> void: background.opacity = value)
 	_pick_photo_button.pressed.connect(_pick_photo)
+
+
+## Re-reads all widgets from background; call after its fields have been
+## changed from outside (e.g. loading a project).
+func sync_ui() -> void:
+	_mode_option.select(background.mode)
+	_solid_swatch.color = background.solid_color
+	_gradient_a_swatch.color = background.gradient_color_a
+	_gradient_b_swatch.color = background.gradient_color_b
+	_gradient_angle_slider.set_value_no_signal(background.gradient_angle)
+	_opacity_slider.set_value_no_signal(background.opacity)
+	_update_visible_rows()
 
 
 func _update_visible_rows() -> void:

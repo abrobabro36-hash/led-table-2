@@ -1,0 +1,37 @@
+[gd_scene load_steps=4 format=3 uid="uid://ft8q2r5s0u4y7"]
+
+[ext_resource type="Script" path="res://scenes/app_shell.gd" id="1_script"]
+[ext_resource type="Theme" path="res://theme/app_theme.tres" id="2_theme"]
+[ext_resource type="PackedScene" path="res://scenes/components/BottomTabBar.tscn" id="3_tabbar"]
+
+[node name="AppShell" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("2_theme")
+script = ExtResource("1_script")
+
+[node name="Background" type="ColorRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.0509804, 0.0509804, 0.0588235, 1)
+
+[node name="ScreenHost" type="Control" parent="."]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BottomTabBar" parent="." instance=ExtResource("3_tabbar")]
+unique_name_in_owner = true
+layout_mode = 1

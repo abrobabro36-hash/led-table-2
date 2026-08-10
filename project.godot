@@ -11,14 +11,17 @@ config_version=5
 [application]
 
 config/name="LEDTable2"
-run/main_scene="res://scenes/MainScreen.tscn"
+run/main_scene="res://scenes/AppShell.tscn"
 config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
+config/quit_on_go_back=false
 
 [autoload]
 
 AudioManager="*res://autoload/audio_manager.gd"
 ProjectManager="*res://autoload/project_manager.gd"
+Router="*res://autoload/router.gd"
+AppSettings="*res://autoload/app_settings.gd"
 
 [display]
 

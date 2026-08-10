@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bxqfqg8m8m8m1"]
+[gd_scene load_steps=10 format=3 uid="uid://bxqfqg8m8m8m1"]
 
 [ext_resource type="Script" path="res://scenes/main_screen.gd" id="1_script"]
 [ext_resource type="Theme" path="res://theme/app_theme.tres" id="2_theme"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" path="res://scenes/panels/ColorPickerPanel.tscn" id="6_colorpicker"]
 [ext_resource type="PackedScene" path="res://scenes/panels/PresetsPanel.tscn" id="7_presets"]
 [ext_resource type="PackedScene" path="res://scenes/panels/ThematicPresetsPanel.tscn" id="8_thematicpresets"]
+[ext_resource type="PackedScene" path="res://scenes/panels/RecorderPanel.tscn" id="9_recorder"]
 
 [node name="MainScreen" type="Control"]
 layout_mode = 3
@@ -84,6 +85,11 @@ layout_mode = 2
 size_flags_horizontal = 3
 
 [node name="ThematicPresetsPanel" parent="Layout/PanelScroll/PanelsBox" instance=ExtResource("8_thematicpresets")]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RecorderPanel" parent="Layout/PanelScroll/PanelsBox" instance=ExtResource("9_recorder")]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3

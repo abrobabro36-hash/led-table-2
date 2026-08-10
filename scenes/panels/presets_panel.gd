@@ -28,6 +28,10 @@ const PATTERN_NAMES := {
 @onready var _volume_row: HBoxContainer = %VolumeRow
 @onready var _volume_slider: HSlider = %VolumeSlider
 @onready var _stop_button: Button = %StopButton
+@onready var _radio_box: VBoxContainer = %RadioBox
+@onready var _radio_record_button: Button = %RadioRecordButton
+@onready var _radio_play_button: Button = %RadioPlayButton
+@onready var _radio_repeat_check: CheckButton = %RadioRepeatCheck
 
 
 func _ready() -> void:
@@ -41,10 +45,17 @@ func _ready() -> void:
 
 	_pattern_row.visible = false
 	_volume_row.visible = false
+	_radio_box.visible = false
 
 	_pattern_option.item_selected.connect(_on_pattern_item_selected)
 	_volume_slider.value_changed.connect(func(value: float) -> void: volume_changed.emit(linear_to_db(value)))
 	_stop_button.pressed.connect(func() -> void: stop_requested.emit())
+
+	_radio_record_button.pressed.connect(_on_radio_record_pressed)
+	_radio_play_button.pressed.connect(_on_radio_play_pressed)
+	_radio_repeat_check.toggled.connect(AudioManager.set_repeat)
+	AudioManager.recording_state_changed.connect(_on_radio_recording_state_changed)
+	AudioManager.playback_state_changed.connect(_on_radio_playback_state_changed)
 
 
 func _on_preset_pressed(preset: SignalPreset) -> void:
@@ -62,7 +73,33 @@ func _on_preset_pressed(preset: SignalPreset) -> void:
 	_volume_row.visible = preset.has_volume_control
 	if preset.has_volume_control:
 		_volume_slider.value = 0.8
+	_radio_box.visible = preset.id == "police"
+	if _radio_box.visible:
+		_radio_play_button.disabled = not AudioManager.can_play_recording()
 	preset_selected.emit(preset, preset.default_pattern)
+
+
+func _on_radio_record_pressed() -> void:
+	if AudioManager.is_recording:
+		AudioManager.stop_recording()
+	else:
+		AudioManager.start_recording()
+
+
+func _on_radio_play_pressed() -> void:
+	if AudioManager.is_playing:
+		AudioManager.stop_playback()
+	else:
+		AudioManager.play_recording()
+
+
+func _on_radio_recording_state_changed(recording: bool) -> void:
+	_radio_record_button.text = "Стоп запись" if recording else "Запись"
+	_radio_play_button.disabled = not AudioManager.can_play_recording()
+
+
+func _on_radio_playback_state_changed(playing: bool) -> void:
+	_radio_play_button.text = "Стоп" if playing else "Воспроизвести"
 
 
 func _on_pattern_item_selected(index: int) -> void:

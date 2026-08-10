@@ -73,3 +73,34 @@ value = 0.8
 unique_name_in_owner = true
 layout_mode = 2
 text = "Стоп"
+
+[node name="RadioBox" type="VBoxContainer" parent="Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Margin/VBox/RadioBox"]
+layout_mode = 2
+text = "Рация"
+
+[node name="RadioTransportRow" type="HBoxContainer" parent="Margin/VBox/RadioBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="RadioRecordButton" type="Button" parent="Margin/VBox/RadioBox/RadioTransportRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Запись"
+
+[node name="RadioPlayButton" type="Button" parent="Margin/VBox/RadioBox/RadioTransportRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+disabled = true
+text = "Воспроизвести"
+
+[node name="RadioRepeatCheck" type="CheckButton" parent="Margin/VBox/RadioBox"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Повтор"

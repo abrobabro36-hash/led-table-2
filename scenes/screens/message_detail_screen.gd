@@ -23,6 +23,7 @@ const DEMO_DURATION := 4.0
 @onready var _text_input: LineEdit = %TextInput
 @onready var _font_option: OptionButton = %FontOption
 @onready var _text_color_swatch: ColorRect = %TextColorSwatch
+@onready var _show_text_check: CheckButton = %ShowTextCheck
 @onready var _style_row: HBoxContainer = %StyleRow
 @onready var _speed_slider: HSlider = %SpeedSlider
 @onready var _brightness_slider: HSlider = %BrightnessSlider
@@ -36,6 +37,8 @@ var _is_active: bool = false
 var _is_fullscreen: bool = false
 var _margin_tween: Tween
 var _demo_timer: Timer
+var _accent_box: StyleBoxFlat
+var _accent_text_color: Color
 
 
 func setup(data: Dictionary) -> void:
@@ -68,6 +71,7 @@ func _ready() -> void:
 	_text_input.text_changed.connect(func(new_text: String) -> void: _led_board.text = new_text)
 	_font_option.item_selected.connect(func(index: int) -> void: _led_board.text_style.font_choice = index)
 	_text_color_swatch.gui_input.connect(_on_text_color_swatch_input)
+	_show_text_check.toggled.connect(_led_board.set_presets_show_text)
 	_speed_slider.value_changed.connect(func(value: float) -> void: _led_board.animation.speed = value)
 	_brightness_slider.value_changed.connect(func(value: float) -> void: _led_board.settings.brightness = value)
 	_demo_button.pressed.connect(_on_demo_pressed)
@@ -84,9 +88,16 @@ func _apply_preset() -> void:
 	_text_input.text = _led_board.text
 	_font_option.select(_led_board.text_style.font_choice)
 	_text_color_swatch.color = _led_board.settings.text_color
+	_show_text_check.set_pressed_no_signal(_led_board.get_presets_show_text())
 	_speed_slider.set_value_no_signal(_led_board.animation.speed)
 	_brightness_slider.set_value_no_signal(_led_board.settings.brightness)
 	_set_selected_mode(_led_board.animation.mode)
+
+	var accent: Color = _preset.palette.colors[0] if _preset.palette and _preset.palette.colors.size() > 0 else Color.WHITE
+	_accent_box = AccentTheme.build_stylebox(_start_button.get_theme_stylebox("pressed"), accent)
+	_accent_text_color = AccentTheme.readable_text_color(accent)
+	for child in _style_row.get_children():
+		AccentTheme.tint_toggle_button(child, _accent_box, _accent_text_color)
 
 
 func _set_selected_mode(mode: AnimationSettings.Mode) -> void:
@@ -140,6 +151,7 @@ func _activate() -> void:
 	_led_board.activate_thematic_preset(_preset)
 	_is_active = true
 	_start_button.text = "Стоп"
+	AccentTheme.tint_active_button(_start_button, _accent_box, _accent_text_color, true)
 	AppSettings.record_activation("thematic", _preset.id)
 
 
@@ -148,6 +160,7 @@ func _deactivate() -> void:
 	_led_board.deactivate_thematic_preset()
 	_is_active = false
 	_start_button.text = "Старт"
+	AccentTheme.tint_active_button(_start_button, _accent_box, _accent_text_color, false)
 
 
 func _on_tap_area_gui_input(event: InputEvent) -> void:

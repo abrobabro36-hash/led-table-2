@@ -22,25 +22,25 @@ unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
-text = "Главная"
+text = "🏠 Главная"
 
 [node name="FavoritesButton" type="Button" parent="Row"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
-text = "Избранное"
+text = "★ Избранное"
 
 [node name="HistoryButton" type="Button" parent="Row"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
-text = "История"
+text = "🕐 История"
 
 [node name="SettingsButton" type="Button" parent="Row"]
 unique_name_in_owner = true
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
-text = "Настройки"
+text = "⚙️ Настройки"

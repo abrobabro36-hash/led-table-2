@@ -10,6 +10,7 @@ const PATTERN_NAMES := {
 const NORMAL_MARGIN := Vector4i(40, 32, 40, 16)
 const FULLSCREEN_TWEEN_DURATION := 0.35
 const DEMO_DURATION := 4.0
+const FONT_NAMES := ["Inter", "Manrope", "Nunito Sans"]
 
 @onready var _led_board: LedBoard = %LedBoard
 @onready var _tap_area: Control = %TapArea
@@ -19,6 +20,11 @@ const DEMO_DURATION := 4.0
 @onready var _title_label: Label = %TitleLabel
 @onready var _favorite_button: Button = %FavoriteButton
 @onready var _fullscreen_button: Button = %FullscreenButton
+@onready var _text_input: LineEdit = %TextInput
+@onready var _font_option: OptionButton = %FontOption
+@onready var _text_color_swatch: ColorRect = %TextColorSwatch
+@onready var _show_text_check: CheckButton = %ShowTextCheck
+@onready var _color_picker: ColorPickerPanel = %ColorPickerPanel
 @onready var _tab_row: HBoxContainer = %TabRow
 @onready var _lights_tab_button: Button = %LightsTabButton
 @onready var _siren_tab_button: Button = %SirenTabButton
@@ -44,6 +50,8 @@ var _is_active: bool = false
 var _is_fullscreen: bool = false
 var _margin_tween: Tween
 var _demo_timer: Timer
+var _accent_box: StyleBoxFlat
+var _accent_text_color: Color
 
 
 func setup(data: Dictionary) -> void:
@@ -59,10 +67,17 @@ func _ready() -> void:
 	_demo_timer.timeout.connect(_on_demo_timeout)
 	add_child(_demo_timer)
 
+	for font_name in FONT_NAMES:
+		_font_option.add_item(font_name)
+
 	_back_button.pressed.connect(func() -> void: Router.pop())
 	_favorite_button.pressed.connect(_on_favorite_pressed)
 	_fullscreen_button.pressed.connect(_toggle_fullscreen)
 	_bottom_fullscreen_button.pressed.connect(_toggle_fullscreen)
+	_text_input.text_changed.connect(func(new_text: String) -> void: _led_board.text = new_text)
+	_font_option.item_selected.connect(func(index: int) -> void: _led_board.text_style.font_choice = index)
+	_text_color_swatch.gui_input.connect(_on_text_color_swatch_input)
+	_show_text_check.toggled.connect(_led_board.set_presets_show_text)
 	_tap_area.gui_input.connect(_on_tap_area_gui_input)
 	_lights_tab_button.pressed.connect(_show_lights_tab)
 	_siren_tab_button.pressed.connect(_show_siren_tab)
@@ -87,8 +102,17 @@ func _apply_preset() -> void:
 	_selected_pattern = _preset.default_pattern
 	_title_label.text = _preset.display_name
 	_favorite_button.text = "★" if AppSettings.is_favorite(_preset.id) else "☆"
+	_text_input.text = _led_board.text
+	_font_option.select(_led_board.text_style.font_choice)
+	_text_color_swatch.color = _led_board.settings.text_color
+	_show_text_check.set_pressed_no_signal(_led_board.get_presets_show_text())
 	_speed_slider.set_value_no_signal(_working_preset.blink_speed)
 	_brightness_slider.set_value_no_signal(_led_board.settings.brightness)
+
+	_accent_box = AccentTheme.build_stylebox(_start_button.get_theme_stylebox("pressed"), _preset.color_a)
+	_accent_text_color = AccentTheme.readable_text_color(_preset.color_a)
+	AccentTheme.tint_toggle_button(_lights_tab_button, _accent_box, _accent_text_color)
+	AccentTheme.tint_toggle_button(_siren_tab_button, _accent_box, _accent_text_color)
 	_volume_slider.set_value_no_signal(0.8)
 	_led_board.set_siren_volume_db(linear_to_db(0.8))
 
@@ -101,6 +125,7 @@ func _apply_preset() -> void:
 		button.toggle_mode = true
 		button.button_pressed = pattern == _selected_pattern
 		button.pressed.connect(_on_pattern_selected.bind(pattern, button))
+		AccentTheme.tint_toggle_button(button, _accent_box, _accent_text_color)
 		_style_row.add_child(button)
 
 	var has_siren: bool = _preset.siren_type != SignalPreset.SirenType.NONE
@@ -135,6 +160,19 @@ func _show_siren_tab() -> void:
 	_siren_section.visible = true
 
 
+func _on_text_color_swatch_input(event: InputEvent) -> void:
+	if event is InputEventMouseButton and event.pressed:
+		if _color_picker.color_picked.is_connected(_on_text_color_picked):
+			_color_picker.color_picked.disconnect(_on_text_color_picked)
+		_color_picker.color_picked.connect(_on_text_color_picked)
+		_color_picker.open_for(_led_board.settings.text_color)
+
+
+func _on_text_color_picked(color: Color) -> void:
+	_text_color_swatch.color = color
+	_led_board.settings.text_color = color
+
+
 func _on_favorite_pressed() -> void:
 	AppSettings.toggle_favorite(_preset.id)
 	_favorite_button.text = "★" if AppSettings.is_favorite(_preset.id) else "☆"
@@ -162,6 +200,7 @@ func _activate() -> void:
 	_led_board.activate_preset(_working_preset, _selected_pattern)
 	_is_active = true
 	_start_button.text = "Стоп"
+	AccentTheme.tint_active_button(_start_button, _accent_box, _accent_text_color, true)
 	AppSettings.record_activation("signal", _preset.id)
 
 
@@ -170,6 +209,7 @@ func _deactivate() -> void:
 	_led_board.deactivate_preset()
 	_is_active = false
 	_start_button.text = "Старт"
+	AccentTheme.tint_active_button(_start_button, _accent_box, _accent_text_color, false)
 
 
 func _on_radio_record_pressed() -> void:

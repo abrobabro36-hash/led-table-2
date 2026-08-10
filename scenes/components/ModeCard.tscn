@@ -3,7 +3,7 @@
 [ext_resource type="Script" path="res://scenes/components/mode_card.gd" id="1_script"]
 
 [node name="ModeCard" type="Button"]
-custom_minimum_size = Vector2(0, 120)
+custom_minimum_size = Vector2(0, 132)
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
@@ -21,12 +21,20 @@ mouse_filter = 2
 theme_override_constants/separation = 10
 alignment = 1
 
-[node name="AccentRect" type="ColorRect" parent="VBox"]
+[node name="IconPanel" type="PanelContainer" parent="VBox"]
 unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 40)
+custom_minimum_size = Vector2(0, 56)
 layout_mode = 2
 mouse_filter = 2
-color = Color(1, 1, 1, 1)
+
+[node name="IconLabel" type="Label" parent="VBox/IconPanel"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_font_sizes/font_size = 30
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "🔷"
 
 [node name="TitleLabel" type="Label" parent="VBox"]
 unique_name_in_owner = true

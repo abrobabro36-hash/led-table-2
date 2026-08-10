@@ -157,6 +157,12 @@ func set_presets_show_text(enabled: bool) -> void:
 	_thematic_player.show_text = enabled
 
 
+## Both players are always kept in sync by set_presets_show_text(), so
+## either one reflects the current shared value.
+func get_presets_show_text() -> bool:
+	return _signal_player.show_text
+
+
 func deactivate_thematic_preset() -> void:
 	_thematic_player.deactivate()
 

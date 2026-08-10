@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://h6n9p3r8t2v5y"]
+[gd_scene load_steps=4 format=3 uid="uid://h6n9p3r8t2v5y"]
 
 [ext_resource type="Script" path="res://scenes/screens/preset_detail_screen.gd" id="1_script"]
 [ext_resource type="PackedScene" uid="uid://c5j0j6yv1n2xr" path="res://scenes/components/LedBoard.tscn" id="2_ledboard"]
+[ext_resource type="PackedScene" uid="uid://dqx1n8v0m5w8k" path="res://scenes/panels/ColorPickerPanel.tscn" id="3_colorpicker"]
 
 [node name="PresetDetailScreen" type="Control"]
 layout_mode = 3
@@ -84,6 +85,54 @@ text = "☆"
 unique_name_in_owner = true
 layout_mode = 2
 text = "⤢"
+
+[node name="TextSection" type="VBoxContainer" parent="Layout/ScrollContainer/Margin/PanelsBox"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Label" type="Label" parent="Layout/ScrollContainer/Margin/PanelsBox/TextSection"]
+layout_mode = 2
+text = "Текст"
+
+[node name="TextInput" type="LineEdit" parent="Layout/ScrollContainer/Margin/PanelsBox/TextSection"]
+unique_name_in_owner = true
+layout_mode = 2
+max_length = 50
+placeholder_text = "Введите текст"
+
+[node name="FontRow" type="HBoxContainer" parent="Layout/ScrollContainer/Margin/PanelsBox/TextSection"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Layout/ScrollContainer/Margin/PanelsBox/TextSection/FontRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(110, 0)
+text = "Шрифт"
+
+[node name="FontOption" type="OptionButton" parent="Layout/ScrollContainer/Margin/PanelsBox/TextSection/FontRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRow" type="HBoxContainer" parent="Layout/ScrollContainer/Margin/PanelsBox/TextSection"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Layout/ScrollContainer/Margin/PanelsBox/TextSection/ColorRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(110, 0)
+text = "Цвет текста"
+
+[node name="TextColorSwatch" type="ColorRect" parent="Layout/ScrollContainer/Margin/PanelsBox/TextSection/ColorRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+color = Color(1, 0.15, 0.15, 1)
+
+[node name="ShowTextCheck" type="CheckButton" parent="Layout/ScrollContainer/Margin/PanelsBox/TextSection"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Показывать текст"
 
 [node name="TabRow" type="HBoxContainer" parent="Layout/ScrollContainer/Margin/PanelsBox"]
 unique_name_in_owner = true
@@ -239,3 +288,6 @@ text = "Воспроизвести"
 unique_name_in_owner = true
 layout_mode = 2
 text = "Повтор"
+
+[node name="ColorPickerPanel" parent="." instance=ExtResource("3_colorpicker")]
+unique_name_in_owner = true

@@ -129,6 +129,11 @@ custom_minimum_size = Vector2(36, 36)
 layout_mode = 2
 color = Color(1, 0.15, 0.15, 1)
 
+[node name="ShowTextCheck" type="CheckButton" parent="Layout/ScrollContainer/Margin/PanelsBox/TextSection"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Показывать текст"
+
 [node name="AnimationSection" type="VBoxContainer" parent="Layout/ScrollContainer/Margin/PanelsBox"]
 layout_mode = 2
 theme_override_constants/separation = 14

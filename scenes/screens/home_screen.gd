@@ -15,6 +15,7 @@ func _ready() -> void:
 
 	var editor_card: ModeCard = ModeCardFactory.MODE_CARD_SCENE.instantiate()
 	editor_card.set_title("Расширенный редактор")
+	editor_card.set_icon("🎛️")
 	editor_card.accent_color = ADVANCED_EDITOR_ACCENT
 	editor_card.card_pressed.connect(func() -> void: Router.push(ADVANCED_EDITOR_SCENE))
 	_card_grid.add_child(editor_card)

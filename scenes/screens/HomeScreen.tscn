@@ -1,6 +1,17 @@
-[gd_scene load_steps=2 format=3 uid="uid://b8n2k5p7q1r3x"]
+[gd_scene load_steps=3 format=3 uid="uid://b8n2k5p7q1r3x"]
 
 [ext_resource type="Script" path="res://scenes/screens/home_screen.gd" id="1_script"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_probadge"]
+bg_color = Color(1, 0.792, 0.157, 1)
+corner_radius_top_left = 10
+corner_radius_top_right = 10
+corner_radius_bottom_right = 10
+corner_radius_bottom_left = 10
+content_margin_left = 12.0
+content_margin_top = 4.0
+content_margin_right = 12.0
+content_margin_bottom = 4.0
 
 [node name="HomeScreen" type="Control"]
 layout_mode = 3
@@ -11,14 +22,54 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="CenterContainer" type="CenterContainer" parent="."]
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+horizontal_scroll_mode = 0
 
-[node name="Label" type="Label" parent="CenterContainer"]
+[node name="Margin" type="MarginContainer" parent="ScrollContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 48
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 24
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/Margin"]
+layout_mode = 2
+theme_override_constants/separation = 20
+
+[node name="HeaderRow" type="HBoxContainer" parent="ScrollContainer/Margin/VBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="TitleLabel" type="Label" parent="ScrollContainer/Margin/VBox/HeaderRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/font_size = 28
 text = "LED Studio"
+
+[node name="ProBadge" type="PanelContainer" parent="ScrollContainer/Margin/VBox/HeaderRow"]
+layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_probadge")
+
+[node name="ProLabel" type="Label" parent="ScrollContainer/Margin/VBox/HeaderRow/ProBadge"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.05, 0.05, 0.06, 1)
+theme_override_font_sizes/font_size = 14
+text = "PRO"
+
+[node name="CardGrid" type="GridContainer" parent="ScrollContainer/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/h_separation = 12
+theme_override_constants/v_separation = 12
+columns = 2
+
+[node name="BottomSpacer" type="Control" parent="ScrollContainer/Margin/VBox"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2

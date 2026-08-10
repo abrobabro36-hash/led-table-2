@@ -16,6 +16,10 @@ config/features=PackedStringArray("4.7", "Forward Plus")
 config/icon="res://icon.svg"
 config/quit_on_go_back=false
 
+[audio]
+
+driver/enable_input=true
+
 [autoload]
 
 AudioManager="*res://autoload/audio_manager.gd"

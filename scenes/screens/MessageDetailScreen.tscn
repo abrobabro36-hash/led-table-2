@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://j8p1r5t9v3x6a"]
+[gd_scene load_steps=4 format=3 uid="uid://j8p1r5t9v3x6a"]
 
 [ext_resource type="Script" path="res://scenes/screens/message_detail_screen.gd" id="1_script"]
+[ext_resource type="PackedScene" uid="uid://c5j0j6yv1n2xr" path="res://scenes/components/LedBoard.tscn" id="2_ledboard"]
+[ext_resource type="PackedScene" uid="uid://dqx1n8v0m5w8k" path="res://scenes/panels/ColorPickerPanel.tscn" id="3_colorpicker"]
 
 [node name="MessageDetailScreen" type="Control"]
 layout_mode = 3
@@ -11,33 +13,192 @@ grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_script")
 
-[node name="Margin" type="MarginContainer" parent="."]
+[node name="Layout" type="VBoxContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme_override_constants/margin_left = 24
-theme_override_constants/margin_top = 48
-theme_override_constants/margin_right = 24
-theme_override_constants/margin_bottom = 24
+theme_override_constants/separation = 0
 
-[node name="VBox" type="VBoxContainer" parent="Margin"]
-layout_mode = 2
-theme_override_constants/separation = 16
-
-[node name="BackButton" type="Button" parent="Margin/VBox"]
+[node name="BoardMargin" type="MarginContainer" parent="Layout"]
 unique_name_in_owner = true
-layout_mode = 2
-size_flags_horizontal = 0
-text = "← Назад"
-
-[node name="CenterContainer" type="CenterContainer" parent="Margin/VBox"]
 layout_mode = 2
 size_flags_vertical = 3
+size_flags_stretch_ratio = 1.1
+theme_override_constants/margin_left = 40
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 40
+theme_override_constants/margin_bottom = 16
 
-[node name="TitleLabel" type="Label" parent="Margin/VBox/CenterContainer"]
+[node name="LedBoard" parent="Layout/BoardMargin" instance=ExtResource("2_ledboard")]
 unique_name_in_owner = true
 layout_mode = 2
+
+[node name="TapArea" type="Control" parent="Layout/BoardMargin"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 1
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+size_flags_stretch_ratio = 1.6
+horizontal_scroll_mode = 0
+
+[node name="Margin" type="MarginContainer" parent="Layout/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 20
+theme_override_constants/margin_bottom = 100
+
+[node name="PanelsBox" type="VBoxContainer" parent="Layout/ScrollContainer/Margin"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 18
+
+[node name="HeaderRow" type="HBoxContainer" parent="Layout/ScrollContainer/Margin/PanelsBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="BackButton" type="Button" parent="Layout/ScrollContainer/Margin/PanelsBox/HeaderRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "← Назад"
+
+[node name="TitleLabel" type="Label" parent="Layout/ScrollContainer/Margin/PanelsBox/HeaderRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+horizontal_alignment = 1
 text = "Пресет"
+
+[node name="FavoriteButton" type="Button" parent="Layout/ScrollContainer/Margin/PanelsBox/HeaderRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "☆"
+
+[node name="FullscreenButton" type="Button" parent="Layout/ScrollContainer/Margin/PanelsBox/HeaderRow"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "⤢"
+
+[node name="TextSection" type="VBoxContainer" parent="Layout/ScrollContainer/Margin/PanelsBox"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Label" type="Label" parent="Layout/ScrollContainer/Margin/PanelsBox/TextSection"]
+layout_mode = 2
+text = "Текст"
+
+[node name="TextInput" type="LineEdit" parent="Layout/ScrollContainer/Margin/PanelsBox/TextSection"]
+unique_name_in_owner = true
+layout_mode = 2
+max_length = 50
+placeholder_text = "Введите текст"
+
+[node name="FontRow" type="HBoxContainer" parent="Layout/ScrollContainer/Margin/PanelsBox/TextSection"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Layout/ScrollContainer/Margin/PanelsBox/TextSection/FontRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(110, 0)
+text = "Шрифт"
+
+[node name="FontOption" type="OptionButton" parent="Layout/ScrollContainer/Margin/PanelsBox/TextSection/FontRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="ColorRow" type="HBoxContainer" parent="Layout/ScrollContainer/Margin/PanelsBox/TextSection"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Layout/ScrollContainer/Margin/PanelsBox/TextSection/ColorRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(110, 0)
+text = "Цвет текста"
+
+[node name="TextColorSwatch" type="ColorRect" parent="Layout/ScrollContainer/Margin/PanelsBox/TextSection/ColorRow"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(36, 36)
+layout_mode = 2
+color = Color(1, 0.15, 0.15, 1)
+
+[node name="AnimationSection" type="VBoxContainer" parent="Layout/ScrollContainer/Margin/PanelsBox"]
+layout_mode = 2
+theme_override_constants/separation = 14
+
+[node name="Label" type="Label" parent="Layout/ScrollContainer/Margin/PanelsBox/AnimationSection"]
+layout_mode = 2
+text = "Анимация"
+
+[node name="StyleRow" type="HBoxContainer" parent="Layout/ScrollContainer/Margin/PanelsBox/AnimationSection"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="SpeedRow" type="HBoxContainer" parent="Layout/ScrollContainer/Margin/PanelsBox/AnimationSection"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Layout/ScrollContainer/Margin/PanelsBox/AnimationSection/SpeedRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(110, 0)
+text = "Скорость"
+
+[node name="SpeedSlider" type="HSlider" parent="Layout/ScrollContainer/Margin/PanelsBox/AnimationSection/SpeedRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.1
+max_value = 3.0
+step = 0.05
+value = 1.0
+
+[node name="BrightnessRow" type="HBoxContainer" parent="Layout/ScrollContainer/Margin/PanelsBox/AnimationSection"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Label" type="Label" parent="Layout/ScrollContainer/Margin/PanelsBox/AnimationSection/BrightnessRow"]
+layout_mode = 2
+custom_minimum_size = Vector2(110, 0)
+text = "Яркость"
+
+[node name="BrightnessSlider" type="HSlider" parent="Layout/ScrollContainer/Margin/PanelsBox/AnimationSection/BrightnessRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+min_value = 0.0
+max_value = 2.0
+step = 0.01
+value = 1.0
+
+[node name="BottomRow" type="HBoxContainer" parent="Layout/ScrollContainer/Margin/PanelsBox"]
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="DemoButton" type="Button" parent="Layout/ScrollContainer/Margin/PanelsBox/BottomRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Демо"
+
+[node name="BottomFullscreenButton" type="Button" parent="Layout/ScrollContainer/Margin/PanelsBox/BottomRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Fullscreen"
+
+[node name="StartButton" type="Button" parent="Layout/ScrollContainer/Margin/PanelsBox/BottomRow"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Старт"
+
+[node name="ColorPickerPanel" parent="." instance=ExtResource("3_colorpicker")]
+unique_name_in_owner = true

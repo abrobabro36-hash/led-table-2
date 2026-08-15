@@ -3,14 +3,14 @@
 [ext_resource type="Script" path="res://scenes/components/mode_card.gd" id="1_script"]
 
 [node name="ModeCard" type="Button"]
-custom_minimum_size = Vector2(0, 132)
+custom_minimum_size = Vector2(0, 204)
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
+size_flags_vertical = 0
 text = ""
 script = ExtResource("1_script")
 
-[node name="VBox" type="VBoxContainer" parent="."]
+[node name="Margin" type="MarginContainer" parent="."]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -18,28 +18,48 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
-theme_override_constants/separation = 10
-alignment = 1
+theme_override_constants/margin_left = 12
+theme_override_constants/margin_top = 12
+theme_override_constants/margin_right = 12
+theme_override_constants/margin_bottom = 14
 
-[node name="IconPanel" type="PanelContainer" parent="VBox"]
-unique_name_in_owner = true
-custom_minimum_size = Vector2(0, 56)
+[node name="VBox" type="VBoxContainer" parent="Margin"]
 layout_mode = 2
 mouse_filter = 2
+theme_override_constants/separation = 14
 
-[node name="IconLabel" type="Label" parent="VBox/IconPanel"]
+[node name="Art" type="PanelContainer" parent="Margin/VBox"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 106)
+layout_mode = 2
+mouse_filter = 2
+clip_contents = true
+
+[node name="PreviewTexture" type="TextureRect" parent="Margin/VBox/Art"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-theme_override_font_sizes/font_size = 30
-horizontal_alignment = 1
-vertical_alignment = 1
-text = "🔷"
+expand_mode = 1
+stretch_mode = 6
 
-[node name="TitleLabel" type="Label" parent="VBox"]
+[node name="TextBlock" type="VBoxContainer" parent="Margin/VBox"]
+layout_mode = 2
+mouse_filter = 2
+theme_override_constants/separation = 6
+
+[node name="TitleLabel" type="Label" parent="Margin/VBox/TextBlock"]
 unique_name_in_owner = true
 layout_mode = 2
 mouse_filter = 2
-horizontal_alignment = 1
-autowrap_mode = 2
+theme_override_font_sizes/font_size = 18
+autowrap_mode = 3
 text = "Card"
+
+[node name="SubtitleLabel" type="Label" parent="Margin/VBox/TextBlock"]
+unique_name_in_owner = true
+layout_mode = 2
+mouse_filter = 2
+theme_override_colors/font_color = Color(0.56, 0.64, 0.74, 1)
+theme_override_font_sizes/font_size = 12
+autowrap_mode = 3
+text = "Mode description"

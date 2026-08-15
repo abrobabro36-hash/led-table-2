@@ -15,32 +15,128 @@ script = ExtResource("1_script")
 
 [node name="Row" type="HBoxContainer" parent="."]
 layout_mode = 2
-theme_override_constants/separation = 0
+theme_override_constants/separation = 4
 
 [node name="HomeButton" type="Button" parent="Row"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 56)
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
-text = "🏠 Главная"
+theme_override_font_sizes/font_size = 11
+text = ""
+
+[node name="Center" type="CenterContainer" parent="Row/HomeButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HomePill" type="PanelContainer" parent="Row/HomeButton/Center"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(78, 44)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Row/HomeButton/Center/HomePill"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "⌂\nГлавная"
 
 [node name="FavoritesButton" type="Button" parent="Row"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 56)
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
-text = "★ Избранное"
+theme_override_font_sizes/font_size = 11
+text = ""
+
+[node name="Center" type="CenterContainer" parent="Row/FavoritesButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="FavoritesPill" type="PanelContainer" parent="Row/FavoritesButton/Center"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(78, 44)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Row/FavoritesButton/Center/FavoritesPill"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "☆\nИзбранное"
 
 [node name="HistoryButton" type="Button" parent="Row"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 56)
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
-text = "🕐 История"
+theme_override_font_sizes/font_size = 11
+text = ""
+
+[node name="Center" type="CenterContainer" parent="Row/HistoryButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="HistoryPill" type="PanelContainer" parent="Row/HistoryButton/Center"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(78, 44)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Row/HistoryButton/Center/HistoryPill"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "◷\nИстория"
 
 [node name="SettingsButton" type="Button" parent="Row"]
 unique_name_in_owner = true
+custom_minimum_size = Vector2(0, 56)
 layout_mode = 2
 size_flags_horizontal = 3
 toggle_mode = true
-text = "⚙️ Настройки"
+theme_override_font_sizes/font_size = 11
+text = ""
+
+[node name="Center" type="CenterContainer" parent="Row/SettingsButton"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="SettingsPill" type="PanelContainer" parent="Row/SettingsButton/Center"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(78, 44)
+layout_mode = 2
+mouse_filter = 2
+
+[node name="Label" type="Label" parent="Row/SettingsButton/Center/SettingsPill"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 11
+horizontal_alignment = 1
+vertical_alignment = 1
+text = "⚙\nНастройки"

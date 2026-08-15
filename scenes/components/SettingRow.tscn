@@ -1,0 +1,25 @@
+[gd_scene format=3]
+
+[node name="SettingRow" type="HBoxContainer"]
+custom_minimum_size = Vector2(0, 52)
+layout_mode = 2
+theme_override_constants/separation = 12
+
+[node name="Copy" type="VBoxContainer" parent="."]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/separation = 2
+
+[node name="Title" type="Label" parent="Copy"]
+layout_mode = 2
+text = "Setting"
+
+[node name="Description" type="Label" parent="Copy"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.48, 0.56, 0.66, 1)
+theme_override_font_sizes/font_size = 12
+
+[node name="ControlSlot" type="Control" parent="."]
+custom_minimum_size = Vector2(44, 44)
+layout_mode = 2
+

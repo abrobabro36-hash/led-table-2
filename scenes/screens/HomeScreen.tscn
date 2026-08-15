@@ -2,15 +2,20 @@
 
 [ext_resource type="Script" path="res://scenes/screens/home_screen.gd" id="1_script"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_probadge"]
-bg_color = Color(1, 0.792, 0.157, 1)
-corner_radius_top_left = 10
-corner_radius_top_right = 10
-corner_radius_bottom_right = 10
-corner_radius_bottom_left = 10
-content_margin_left = 12.0
+[sub_resource type="StyleBoxFlat" id="ProBadge"]
+bg_color = Color(0.14, 0.1, 0.02, 1)
+border_width_left = 1
+border_width_top = 1
+border_width_right = 1
+border_width_bottom = 1
+border_color = Color(1, 0.72, 0.08, 0.85)
+corner_radius_top_left = 9
+corner_radius_top_right = 9
+corner_radius_bottom_right = 9
+corner_radius_bottom_left = 9
+content_margin_left = 10.0
 content_margin_top = 4.0
-content_margin_right = 12.0
+content_margin_right = 10.0
 content_margin_bottom = 4.0
 
 [node name="HomeScreen" type="Control"]
@@ -34,42 +39,79 @@ horizontal_scroll_mode = 0
 [node name="Margin" type="MarginContainer" parent="ScrollContainer"]
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_vertical = 0
 theme_override_constants/margin_left = 20
-theme_override_constants/margin_top = 48
+theme_override_constants/margin_top = 24
 theme_override_constants/margin_right = 20
-theme_override_constants/margin_bottom = 24
+theme_override_constants/margin_bottom = 128
 
 [node name="VBox" type="VBoxContainer" parent="ScrollContainer/Margin"]
 layout_mode = 2
+size_flags_vertical = 0
 theme_override_constants/separation = 20
 
 [node name="HeaderRow" type="HBoxContainer" parent="ScrollContainer/Margin/VBox"]
 layout_mode = 2
 theme_override_constants/separation = 12
 
-[node name="TitleLabel" type="Label" parent="ScrollContainer/Margin/VBox/HeaderRow"]
+[node name="Brand" type="VBoxContainer" parent="ScrollContainer/Margin/VBox/HeaderRow"]
 layout_mode = 2
 size_flags_horizontal = 3
+theme_override_constants/separation = 3
+
+[node name="TitleLabel" type="Label" parent="ScrollContainer/Margin/VBox/HeaderRow/Brand"]
+layout_mode = 2
 theme_override_font_sizes/font_size = 28
 text = "LED Studio"
 
+[node name="SubtitleLabel" type="Label" parent="ScrollContainer/Margin/VBox/HeaderRow/Brand"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.57, 0.65, 0.76, 1)
+theme_override_font_sizes/font_size = 14
+text = "Выберите режим"
+
 [node name="ProBadge" type="PanelContainer" parent="ScrollContainer/Margin/VBox/HeaderRow"]
 layout_mode = 2
-theme_override_styles/panel = SubResource("StyleBoxFlat_probadge")
+theme_override_styles/panel = SubResource("ProBadge")
 
 [node name="ProLabel" type="Label" parent="ScrollContainer/Margin/VBox/HeaderRow/ProBadge"]
 layout_mode = 2
-theme_override_colors/font_color = Color(0.05, 0.05, 0.06, 1)
-theme_override_font_sizes/font_size = 14
-text = "PRO"
+theme_override_colors/font_color = Color(1, 0.78, 0.18, 1)
+theme_override_font_sizes/font_size = 11
+text = "LED"
+
+[node name="SectionRow" type="HBoxContainer" parent="ScrollContainer/Margin/VBox"]
+layout_mode = 2
+
+[node name="SectionLabel" type="Label" parent="ScrollContainer/Margin/VBox/SectionRow"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_colors/font_color = Color(0.68, 0.75, 0.85, 1)
+theme_override_font_sizes/font_size = 13
+text = "РЕЖИМЫ"
+
+[node name="CountLabel" type="Label" parent="ScrollContainer/Margin/VBox/SectionRow"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_colors/font_color = Color(0.44, 0.52, 0.62, 1)
+theme_override_font_sizes/font_size = 12
 
 [node name="CardGrid" type="GridContainer" parent="ScrollContainer/Margin/VBox"]
 unique_name_in_owner = true
 layout_mode = 2
-theme_override_constants/h_separation = 12
-theme_override_constants/v_separation = 12
+size_flags_vertical = 0
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 18
 columns = 2
 
-[node name="BottomSpacer" type="Control" parent="ScrollContainer/Margin/VBox"]
-custom_minimum_size = Vector2(0, 80)
+[node name="CreateSectionLabel" type="Label" parent="ScrollContainer/Margin/VBox"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0.68, 0.75, 0.85, 1)
+theme_override_font_sizes/font_size = 13
+text = "СОЗДАТЬ СВОЁ"
+
+[node name="EditorCardHost" type="VBoxContainer" parent="ScrollContainer/Margin/VBox"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 0
